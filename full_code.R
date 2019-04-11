@@ -57,6 +57,7 @@ summary(age_groups)
 range_normalize <- function(x){
   (x - min(x)) / (max(x) - min(x))
 }
+
 custdata[, "range_normalized_age"] <- range_normalize(custdata$age)
 summary(custdata$range_normalized_age)
 summary(custdata$age)
