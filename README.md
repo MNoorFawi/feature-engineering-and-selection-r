@@ -786,9 +786,9 @@ sort(deviance_improvement, decreasing = TRUE)
 ``` r
 ggplot(
   data.frame(
-  variable = names(deviance_improvement),
-  deviance_improvement = round(deviance_improvement, 2)
-  ),
+    variable = names(deviance_improvement),
+    deviance_improvement = round(deviance_improvement, 2)
+    ),
   aes(x = variable, y = deviance_improvement)
   ) +
   geom_bar(stat = "identity", color = "white", fill = "cornflowerblue") +
