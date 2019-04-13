@@ -784,6 +784,24 @@ sort(deviance_improvement, decreasing = TRUE)
     ##        0.1063151
 
 ``` r
+ggplot(
+  data.frame(
+  variable = names(deviance_improvement),
+  deviance_improvement = round(deviance_improvement, 2)
+  ),
+  aes(x = variable, y = deviance_improvement)
+  ) +
+  geom_bar(stat = "identity", color = "white", fill = "cornflowerblue") +
+  # threshold
+  geom_hline(yintercept = mean(deviance_improvement), linetype = "dashed") +
+  geom_text(aes(label = deviance_improvement), color = "black", vjust = 1.5) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggtitle("Single Variable Model Deviance Improvement") 
+```
+
+![](feature_engineering_files/figure-markdown_github/scores-1.png)
+
+``` r
 sv_pseudo_rsquared <- 1 - (sv_model_deviance / null_deviance)
 sort(sv_pseudo_rsquared, decreasing = TRUE)
 ```
@@ -794,6 +812,34 @@ sort(sv_pseudo_rsquared, decreasing = TRUE)
     ##     0.0435675854     0.0304555019     0.0095728588     0.0058418306 
     ##          svm_sex 
     ##     0.0001549067
+
+``` r
+rsq <- data.frame(variable = names(sv_pseudo_rsquared),
+                  Rsquared = round(sv_pseudo_rsquared, 2), 
+                  selected = ifelse(sv_pseudo_rsquared >= mean(sv_pseudo_rsquared), 
+                                    "good candidate", "bad candidate"))
+
+ggplot(rsq, aes(x = Rsquared, y = reorder(variable, Rsquared))) +
+  geom_point(aes(color = selected), size = 2) +
+  scale_color_brewer(palette = "Set1") +
+  theme_bw() +
+  theme(
+    # No vertical grid lines
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    # horizontal grid
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed"),
+    legend.position = c(1, 0.55),
+    # Put legend inside plot area
+    legend.justification = c(1, 0.5)
+    ) +
+  # threshold
+  geom_vline(xintercept = mean(sv_pseudo_rsquared), linetype = "dashed") +
+  xlab("SVM Pseudo R-Squared") + ylab("Variable") +
+  ggtitle("Single Variable Model Pseudo R-Squared")
+```
+
+![](feature_engineering_files/figure-markdown_github/scores-2.png)
 
 Select Variables based on a threshold
 
