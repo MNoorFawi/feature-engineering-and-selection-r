@@ -266,6 +266,11 @@ age_groups <-
   cut(custdata$age,
       breaks = probs, include.lowest = T)
 summary(age_groups)
+# to remove NAs
+#gp_with_no_na <- addNA(age_groups)
+levels(gp_with_no_na) <- c(levels(age_groups), "newlevel")
+summary(gp_with_no_na)
+
 ```
 
     ##  [29,36]  (36,41]  (41,46]  (46,50]  (50,55]  (55,60]  (60,67]  (67,76] 
